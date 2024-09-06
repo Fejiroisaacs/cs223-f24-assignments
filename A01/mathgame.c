@@ -8,9 +8,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <time.h>
+	
 int main() {
-	int totalGames, x, y, userSol, sol, i;
+  srand(time(NULL));
+  int totalGames, x, y, userSol, sol, i;
 	int correct = 0;
 
 	printf("Welcome to my math game. How many games would you like to play? ");
