@@ -3,7 +3,7 @@
  * This program implements the math game which asks the users
  * a series of addition questions which they specify at the start
  * @author: Oghenefejiro Anigboro
- * @version: September 6th, 2020 
+ * @version: September 6th, 2024 
  */
 
 #include <stdio.h>
