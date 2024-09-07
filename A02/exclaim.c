@@ -1,5 +1,6 @@
 /***************************************************
  * exclaim.c
+ * This program converts the users input into an exclamation.
  * @author: Oghenefejiro Anigboro
  * @version: September 6th, 2024 
  */
