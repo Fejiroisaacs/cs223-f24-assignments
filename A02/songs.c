@@ -1,6 +1,7 @@
 /***************************************************
  * songs.c
- * This program 
+ * This program serves as a database for Fejiro's songs
+ * users can edit the information about each songs 
  * @author: Oghenefejiro Anigboro
  * @version: September 6th, 2024
  */
@@ -12,56 +13,64 @@
  * Struct which saves info about a song
  */
 struct song{
-  int duration;
+  short int duration;
   float danceability;
   char artist[128], title[1024];
 };
 
 void printSongs(struct song songs[3]){
-  int min, sec, i;
+  short int min, sec, i;
   for (i = 0; i < 3; i++){
     min = songs[i].duration / 60;
     sec = songs[i].duration % 60;
-    printf("%d) %-25s \tartist: %-20s \tduration: %2d:%-2d \tdanceability: %.02f\n", i, songs[i].title,
-    songs[i].artist, min, sec, songs[i].danceability);
+    printf("%d) %-25s\tartist: %-20s\tduration: %2d:%-2d"
+        "\tdanceability: %.02f\n", i, songs[i].title, 
+        songs[i].artist, min, sec, songs[i].danceability);
   }
 }
 
 int editSongs(struct song songs[3]){
-  int songId;
+  short int songId, newSec, newMin;
   char option[32];
 
   printf("Enter a song id to edit [0,1,2]: ");
-  scanf(" %d", &songId);
+  scanf(" %hd", &songId);
 
   if (songId > 2 || songId < 0){
     printf("Invalid Choice!\n");
     return 1; // function terminates if invalid option is selected
   }
   
-  printf("Which attribute do you wish to edit? [artist, title, duration, danceability]: ");
+  printf("Which attribute do you wish to edit? "
+      "[artist, title, duration, danceability]: ");
   scanf(" %s", option);
 
   if (strcmp("artist", option) == 0){
-    char newArtist[64];
     printf("Enter an artist: ");
     scanf(" %[^\n]%*c", songs[songId].artist);
-    printSongs(songs);
   } else if (strcmp("title", option) == 0){
-
+    printf("Enter a title: ");
+    scanf(" %[^\n]%*c", songs[songId].title);
   } else if (strcmp("duration", option) == 0){
-
+    printf("Enter a duration (minutes): ");
+    scanf(" %hd%*c", &newMin);
+    printf("Enter a duration (seconds): ");
+    scanf(" %hd%*c", &newSec);
+    songs[songId].duration = (60*newMin) + newSec;
   } else if (strcmp("danceability", option) == 0){
-
+    printf("Enter danceability: ");
+    scanf(" %f%*c", &songs[songId].danceability);
   } else {
-    printf("Invalid choice\n");
+    printf("Invalid choice!\n");
     return 1;
   }
+
+  printSongs(songs);
   return 0;
 }
 
 int main() {
-  printf("Welcome to Fejiro Struct's Song List.\n");
+  printf("Welcome to Fejiro Struct's Song List.\n\n");
   struct song songsArray[3];
 
   strcpy(songsArray[0].title, "Love Me JeJe");
