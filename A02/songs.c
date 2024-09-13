@@ -18,7 +18,10 @@ struct song{
   char artist[128], title[1024];
 };
 
-void printSongs(struct song songs[3]){
+/*
+ * takes in a songs struct array and prints the values as a table
+ */
+void printSongs(struct song songs[]){
   short int min, sec, i;
   for (i = 0; i < 3; i++){
     min = songs[i].duration / 60;
@@ -29,7 +32,10 @@ void printSongs(struct song songs[3]){
   }
 }
 
-int editSongs(struct song songs[3]){
+/*
+ * function to edit the contents of the songs struct array
+ */
+int editSongs(struct song songs[]){
   short int songId, newSec, newMin;
   char option[32];
 

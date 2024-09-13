@@ -16,7 +16,7 @@ int main() {
 
   char buff[32];
   short ascii;
-  char exclaimChars[4] = {'@', '!', '#', '*'};
+  char exclaimChars[4] = {'@', '!', '#', '*'}; // no need for null char here
 
   printf("Enter a word: ");
   scanf(" %s", buff);
