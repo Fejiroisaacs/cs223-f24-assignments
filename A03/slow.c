@@ -18,10 +18,9 @@ int main() {
   scanf(" %hd", &pauseLength);
   
   printf("Text: ");
-  scanf(" %s", buff);
+  scanf(" %[^\n]%*c", buff);
   
-  //entPhrase = malloc(sizeof(char)*3000);
-  entPhrase = malloc((sizeof(char) * strlen(buff) * pauseLength) + 1);
+  entPhrase = malloc((sizeof(char) * strlen(buff) + 1) * pauseLength);
   for(int i = 0; i < strlen(buff); i++){
     entPhrase[entIndex] = buff[i];
     for(int j = 0; j < pauseLength; j++){
@@ -33,7 +32,7 @@ int main() {
   entPhrase[entIndex] = '\0';
 
   printf("%s\n", entPhrase);
-  
+  printf("%ld", strlen(entPhrase));
   free(entPhrase);
   return 0;
 }
