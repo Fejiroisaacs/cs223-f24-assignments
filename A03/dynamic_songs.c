@@ -1,7 +1,7 @@
 /*----------------------------------------------
  * Author: Oghenefejiro Anigboro
  * Date: 09/14/2024
- * Description
+ * Description: This program serves as a database for Fejiro's songs
  ---------------------------------------------*/
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,23 +13,23 @@ typedef struct song{
   char artist[128], title[1024];
 }song;
 
-void updateSongs(char* line, song* songArray, short arrIndex){
+void updateSongs(char* line, song* songStruct){
   short index = 0;
   while(line != NULL){
     if(index == 0){
-      strcpy(songArray[arrIndex].title, line);
+      strcpy(songStruct->title, line);
     } else if(index == 1) {
-      strcpy(songArray[arrIndex].artist, line);
+      strcpy(songStruct->artist, line);
     } else if(index == 2) {
-      songArray[arrIndex].duration = atoi(line);
+      songStruct->duration = atoi(line);
     } else if(index == 3) {
-      songArray[arrIndex].danceability = atof(line);
+      songStruct->danceability = atof(line);
     } else if(index == 4) {
-      songArray[arrIndex].Energy = atof(line);
+      songStruct->Energy = atof(line);
     } else if(index == 5) {
-      songArray[arrIndex].Tempo = atof(line);
+      songStruct->Tempo = atof(line);
     } else if(index == 6) {
-      songArray[arrIndex].Valence = atof(line);
+      songStruct->Valence = atof(line);
     }
     index++;
     line = strtok(NULL, ",");
@@ -65,10 +65,11 @@ int main() {
       fgets(line, 100, songData); // reading out column titles
       continue;
     }
-    updateSongs(strtok(line, ","), songArray, index);
+    updateSongs(strtok(line, ","), &songArray[index]);
     index++;
   }
   
+  printf("Welcome to Oghenefejiro Anigboro's Danceability Directory.");
   printSongs(songArray);
   free(songArray);
   fclose(songData);
