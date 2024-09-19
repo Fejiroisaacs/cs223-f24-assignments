@@ -69,7 +69,7 @@ int main() {
     index++;
   }
   
-  printf("Welcome to Oghenefejiro Anigboro's Danceability Directory.");
+  printf("Welcome to Oghenefejiro Anigboro's Danceability Directory.\n");
   printSongs(songArray);
   free(songArray);
   fclose(songData);
