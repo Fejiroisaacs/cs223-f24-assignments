@@ -13,21 +13,6 @@ int bin2hex(int power){
   return value;
 }
 
-int* dec2bin(int num){
-  if(num > 255) exit(1);
-
-  int* binArr = malloc(sizeof(int)*8);
-  int index = 7;
-
-  while (num > 0){
-    binArr[index] = num%2;
-    num /= 2;
-    --index;
-  }
-
-  return binArr;
-}
-
 int main(int argc, char** argv) {
 
   if (argc != 2) {
@@ -37,8 +22,6 @@ int main(int argc, char** argv) {
 
   int w, h, bitsNum;
   struct ppm_pixel** pixels = read_ppm_2d(argv[1], &w, &h);
-  
-
   
   bitsNum = w*h*3;
   int* bits = malloc(sizeof(int)*bitsNum);
