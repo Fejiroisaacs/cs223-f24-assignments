@@ -59,7 +59,8 @@ int main(int argc, char** argv) {
   printf("Reading %s with width %d and height %d\n", argv[1], w, h);
   printf("Max number of characters in the image: %d\n", (int)(bitsNum/8));
 
-  encodedPhrase = malloc(sizeof(char)*((int)(bitsNum/8))+1); // making space for phrase and '\0'
+  // making space for phrase and '\0'
+  encodedPhrase = malloc(sizeof(char)*((int)(bitsNum/8))+1);
 
   printf("Enter a phrase: ");
   scanf(" %[^\n]%*c", encodedPhrase);
@@ -73,7 +74,6 @@ int main(int argc, char** argv) {
   }
 
   int encodedIndex = 0, currChar = 0;
-
   while(encodedIndex < bitsNum && currChar < strlen(encodedPhrase)){
     int* charConv = dec2bin(encodedPhrase[currChar]);
     for(int i = 0; i < 8; ++i){
@@ -84,7 +84,8 @@ int main(int argc, char** argv) {
     free(charConv);
   }
 
-  encodedIndex = (strlen(encodedPhrase) * 8 );
+  // ensure index = max index for encoding
+  encodedIndex = (strlen(encodedPhrase) * 8);
 
   int bitIndex = 0, end = 0;
   for(int i = 0; i < h; i++){
@@ -108,17 +109,29 @@ int main(int argc, char** argv) {
     }
     if(end == 1) break;
   }
-
-  printf("Writing file feep-raw-encoded.ppm\n");
-  write_ppm_2d("feep-raw-encoded.ppm", pixels, w, h);
   
+  char* output = malloc(sizeof(char)*(strlen(argv[1])+9));
+  strncpy(output, argv[1], strlen(argv[1])-4);
+  
+  // configuring output string
+  char* ending = "-encoded.ppm";
+  for(int i = 0; i < 12; ++i){
+    output[strlen(argv[1])-4+i] = ending[i];
+  }
+  output[strlen(argv[1])+8] = '\0';
+  
+  printf("Writing file %s\n", output);
+  write_ppm_2d(output, pixels, w, h);
+  
+  // freeing malloc'd memory
   for(int i = 0; i < h; i++){
     free(pixels[i]);
   }
-
   free(pixels);
   free(bits);
+  free(output);
   free(encodedPhrase);
+
   return 0;
 }
 
