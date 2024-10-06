@@ -28,17 +28,16 @@ struct ppm_pixel** read_ppm_2d(const char* filename, int* w, int* h) {
   int index = 0;
   while(fgets(buff, 100, ppmData)){
     if(index == 2){
-      *w = (int)buff[0] - (int)'0';
-      *h = (int)buff[2] - (int)'0';
+      sscanf(buff, "%d %d", w, h);
     }
     if(index == 3) break;
     index++;
   }
   
-  binary = malloc(sizeof(struct ppm_pixel*)* *w);
+  binary = malloc(sizeof(struct ppm_pixel*)* *h);
   
   for(int i = 0; i < *h; i++){
-    binary[i] = malloc(sizeof(struct ppm_pixel)* *h);
+    binary[i] = malloc(sizeof(struct ppm_pixel)* *w);
     if(binary[i] == NULL){
       perror("Error allocating memory");
       return NULL;

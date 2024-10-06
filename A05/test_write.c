@@ -22,14 +22,14 @@ int main(int argc, char** argv) {
   struct ppm_pixel** newPixels = read_ppm_2d("test.ppm", &w2, &h2);
   
   printf("Testing file test.ppm: %d %d\n", w2, h2);
-  for(int i = 0; i < w; i++){
-    for(int j = 0; j < h; j++){
+  for(int i = 0; i < h; i++){
+    for(int j = 0; j < w; j++){
       printf("(%hhu,%hhu,%hhu) ", newPixels[i][j].red, newPixels[i][j].green, newPixels[i][j].blue);
     }
     printf("\n");
   }
 
-  for(int i = 0; i < w; i++){
+  for(int i = 0; i < h; i++){
     free(pixels[i]);
     free(newPixels[i]);
   }
