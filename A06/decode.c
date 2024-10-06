@@ -19,10 +19,14 @@ int main(int argc, char** argv) {
     printf("usage: decode <file.ppm>\n");
     return 0;
   }
-
+  
   int w, h, bitsNum;
   struct ppm_pixel** pixels = read_ppm_2d(argv[1], &w, &h);
   
+  if(pixels == NULL){
+    exit(0);
+  } 
+
   bitsNum = w*h*3;
   int* bits = malloc(sizeof(int)*bitsNum);
   printf("Reading %s with width %d and height %d\n", argv[1], w, h);
@@ -46,10 +50,11 @@ int main(int argc, char** argv) {
       digit += bits[i+j] * bin2hex(7-j);
     }
     i += 8;
-    printf("%c", digit);
+    printf("%c", digit%256); // keep within ascii characters
     
   }
-  
+
+  printf("\n"); 
   for(int i = 0; i < h; i++){
     free(pixels[i]);
   }
