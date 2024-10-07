@@ -87,27 +87,24 @@ int main(int argc, char** argv) {
   // ensure index = max index for encoding
   encodedIndex = (strlen(encodedPhrase) * 8);
 
-  int bitIndex = 0, end = 0;
+  int bitIndex = 0;
   for(int i = 0; i < h; i++){
     for(int j = 0; j < w; j++){
+      // update last bits to encoded values else 0 if no characters left to encode.
       if(bitIndex >= encodedIndex){
-        end = 1;
-        break;
+        updateBit(0, &pixels[i][j].red);
       } else updateBit(bits[bitIndex], &pixels[i][j].red);
       
       if(bitIndex+1 >= encodedIndex){
-        end = 1;
-        break;
+        updateBit(0, &pixels[i][j].green);
       } else updateBit(bits[bitIndex+1], &pixels[i][j].green);
 
       if(bitIndex+2 >= encodedIndex){
-        end = 1;
-        break;
+        updateBit(0, &pixels[i][j].blue);
       } else updateBit(bits[bitIndex+2], &pixels[i][j].blue);
 
       bitIndex+=3;
     }
-    if(end == 1) break;
   }
   
   char* output = malloc(sizeof(char)*(strlen(argv[1])+9));
@@ -134,4 +131,3 @@ int main(int argc, char** argv) {
 
   return 0;
 }
-
