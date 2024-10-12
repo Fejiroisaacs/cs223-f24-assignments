@@ -50,6 +50,7 @@ int main(int argc, char** argv) {
       digit += bits[i+j] * bin2hex(7-j);
     }
     i += 8;
+    if(digit%256 == 0) break;
     printf("%c", digit%256); // keep within ascii characters
     
   }

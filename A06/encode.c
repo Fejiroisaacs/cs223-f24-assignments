@@ -57,23 +57,29 @@ int main(int argc, char** argv) {
   int* bits = malloc(sizeof(int)*bitsNum);
   
   printf("Reading %s with width %d and height %d\n", argv[1], w, h);
-  printf("Max number of characters in the image: %d\n", (int)(bitsNum/8));
+  printf("Max number of characters in the image: %d\n", (int)(bitsNum/8)-1);
 
   // making space for phrase and '\0'
-  encodedPhrase = malloc(sizeof(char)*((int)(bitsNum/8))+1);
+  encodedPhrase = malloc(sizeof(char)*((int)(bitsNum/8))+100);
 
   printf("Enter a phrase: ");
-  scanf(" %[^\n]%*c", encodedPhrase);
-  
-  if(strlen(encodedPhrase) > (int)(bitsNum/8)){
+  fgets(encodedPhrase, (int)(bitsNum/8), stdin);
+
+  // should not be needed -- here because I used scanf to read phrase at first
+  if(strlen(encodedPhrase) > (int)(bitsNum/8)-1){
     printf("Invalid phrase. Inputed phrase must be <= %d characters\n",
-        (int)(bitsNum/8));
+        (int)(bitsNum/8)-1);
     free(encodedPhrase);
     free(bits);
+    for(int i = 0; i < h; i++){
+      free(pixels[i]);
+    }
+    free(pixels);
     exit(0);
   }
 
   int encodedIndex = 0, currChar = 0;
+  printf("Encoding phrase: %s\n", encodedPhrase);
   while(encodedIndex < bitsNum && currChar < strlen(encodedPhrase)){
     int* charConv = dec2bin(encodedPhrase[currChar]);
     for(int i = 0; i < 8; ++i){
@@ -87,24 +93,31 @@ int main(int argc, char** argv) {
   // ensure index = max index for encoding
   encodedIndex = (strlen(encodedPhrase) * 8);
 
-  int bitIndex = 0;
+  int bitIndex = 0, null_ct = 0;
   for(int i = 0; i < h; i++){
     for(int j = 0; j < w; j++){
-      // update last bits to encoded values else 0 if no characters left to encode.
+      // update last bits to encoded values else 0 for null character.
       if(bitIndex >= encodedIndex){
+        null_ct++;
         updateBit(0, &pixels[i][j].red);
+        if (null_ct == 8) break;
       } else updateBit(bits[bitIndex], &pixels[i][j].red);
       
       if(bitIndex+1 >= encodedIndex){
+        null_ct++;
         updateBit(0, &pixels[i][j].green);
+        if (null_ct == 8) break;
       } else updateBit(bits[bitIndex+1], &pixels[i][j].green);
 
       if(bitIndex+2 >= encodedIndex){
+        null_ct++;
         updateBit(0, &pixels[i][j].blue);
+        if (null_ct == 8) break;
       } else updateBit(bits[bitIndex+2], &pixels[i][j].blue);
 
       bitIndex+=3;
     }
+    if (null_ct == 8) break;
   }
   
   char* output = malloc(sizeof(char)*(strlen(argv[1])+9));
