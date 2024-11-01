@@ -36,7 +36,7 @@ int main() {
   using_history(); 
 
   while(1){
-    printf("\033[5;93m%s\033[0m" "@" MAGENTA"%s:" CYAN"%s" RESET ":) ", pws->pw_name, hostname, dir);
+    printf("\033[5;93m%s\033[0m" "@" MAGENTA"%s:" CYAN"%s" RESET ":)", pws->pw_name, hostname, dir);
     userInput = readline(hold);
 
     if (userInput == NULL || strcmp(userInput, "exit") == 0) {
