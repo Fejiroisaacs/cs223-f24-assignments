@@ -1,3 +1,8 @@
+/*----------------------------------------------
+ * Author: Oghenefejiro Anigboro 
+ * Date: 10/27/2024
+ * Description: my implementation of a shell
+ ---------------------------------------------*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

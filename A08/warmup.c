@@ -1,3 +1,8 @@
+/*----------------------------------------------
+ * Author: Oghenefejiro Anigboro 
+ * Date: 10/28/2024
+ * Description: warm up program for learning how to fork
+ ---------------------------------------------*/
 #include <stdio.h>
 #include  <string.h>
 #include  <sys/types.h>
