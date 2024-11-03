@@ -7,10 +7,11 @@
 #include  <string.h>
 #include  <sys/types.h>
 #include <unistd.h>
+#include <sys/wait.h>
 
 int main() {
   pid_t pid;
-  
+  int child_status;
   printf("%d] A0\n", getpid());
   fflush(stdout);
   pid = fork();
@@ -21,7 +22,9 @@ int main() {
   } else {
     printf("%d] B0\n", getpid());
     fflush(stdout);
+    pid = wait(&child_status);
     pid = fork();
+    
     if (pid == 0){
       printf("%d] C1\n", getpid());
       fflush(stdout);
