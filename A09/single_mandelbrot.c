@@ -38,9 +38,9 @@ int main(int argc, char* argv[]) {
   // generate pallet
   srand(time(0));
   palette = malloc(sizeof(struct ppm_pixel)*maxIterations);
-  float basered = rand() % 255;
-  float basegreen = rand() % 255;
-  float baseblue = rand() % 255;
+  unsigned char basered = rand() % 255;
+  unsigned char basegreen = rand() % 255;
+  unsigned char baseblue = rand() % 255;
   for(int i = 0; i < maxIterations; i++){
     palette[i].red = basered + rand() % 100 - 50;
     palette[i].green = basegreen + rand() % 100 - 50;
@@ -55,20 +55,23 @@ int main(int argc, char* argv[]) {
       return 1;
     }
   }
-  clock_t start, end;
-  start = clock();
-  for(int i = 0; i < size; i++){
-    for(int j = 0; j < size; j++){
-      float xfrac = i / size;
-      float yfrac = j / size;
-      float x0 = xmin + xfrac * (xmax - xmin);
-      float y0 = ymin + yfrac * (ymax - ymin);
 
-      int x = 0;
-      int y = 0;
+  double timer;
+  struct timeval tstart, tend;
+  gettimeofday(&tstart, NULL);
+
+  for(int i = 1; i < size; i++){
+    for(int j = 1; j < size; j++){
+      double xfrac = (double)i / size;
+      double yfrac = (double)j / size;
+      double x0 = xmin + xfrac * (double)(xmax - xmin);
+      double y0 = ymin + yfrac * (double)(ymax - ymin);
+
+      double x = 0;
+      double y = 0;
       int iter = 0;
       while (iter < maxIterations && x*x + y*y < 2*2){
-        float xtmp = x*x - y*y + x0;
+        double xtmp = x*x - y*y + x0;
         y = 2*x*y + y0;
         x = xtmp;
         iter++;
@@ -81,12 +84,12 @@ int main(int argc, char* argv[]) {
         color = black;
       }
       pixels[i][j] = color;
-
-
     }
   }
-  end = clock();
-  printf("Computed mandelbrot set (%dx%d) in %f seconds\n", size, size, (double)(end-start)/CLOCKS_PER_SEC);
+
+  gettimeofday(&tend, NULL);
+  timer = tend.tv_sec - tstart.tv_sec + (tend.tv_usec - tstart.tv_usec)/1.e6;
+  printf("Computed mandelbrot set (%dx%d) in %f seconds\n", size, size, timer);
   
   char *filename = malloc(sizeof(char)*50);
   char *filestart = "mandelbrot-";
@@ -123,6 +126,7 @@ int main(int argc, char* argv[]) {
 
   printf("Writing file: %s\n", filename);
   write_ppm_2d(filename, pixels, size, size);
+
   // freeing malloc'd memory
   for(int i = 0; i < size; i++){
     free(pixels[i]);

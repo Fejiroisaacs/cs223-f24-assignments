@@ -17,11 +17,8 @@ void write_ppm_2d(const char* filename, struct ppm_pixel** pixels, int w, int h)
   
   FILE* binFile = fopen(filename, "wb"); 
 
-  char dimensions[3];
-  dimensions[0] = w + '0';
-  dimensions[1] = ' ';
-  dimensions[2] = h + '0';
-
+  char dimensions[20]; 
+  sprintf(dimensions, "%d %d", w, h);
 
   fprintf(binFile, "%s", "P6\n");
   fprintf(binFile, "%s", "#Created by GIMP version 2.10.24 PNM plug-in\n");
