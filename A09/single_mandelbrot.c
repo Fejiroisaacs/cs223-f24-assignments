@@ -60,8 +60,8 @@ int main(int argc, char* argv[]) {
   struct timeval tstart, tend;
   gettimeofday(&tstart, NULL);
 
-  for(int i = 1; i < size; i++){
-    for(int j = 1; j < size; j++){
+  for(int i = 0; i < size; i++){
+    for(int j = 0; j < size; j++){
       double xfrac = (double)i / size;
       double yfrac = (double)j / size;
       double x0 = xmin + xfrac * (double)(xmax - xmin);
