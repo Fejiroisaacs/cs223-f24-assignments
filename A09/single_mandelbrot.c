@@ -1,3 +1,8 @@
+/*----------------------------------------------
+ * Author: Oghenefejiro Anigboro
+ * Date: 11/07/2024
+ * Description: Program for computing the Mandelbrot set using a single thread
+ ---------------------------------------------*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
