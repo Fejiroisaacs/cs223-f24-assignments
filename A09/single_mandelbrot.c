@@ -88,7 +88,7 @@ int main(int argc, char* argv[]) {
       } else {
         color = black;
       }
-      pixels[i][j] = color;
+      pixels[j][i] = color;
     }
   }
 

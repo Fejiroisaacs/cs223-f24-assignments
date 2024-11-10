@@ -44,10 +44,12 @@ void* compute_pixel(void* userdata){
         iter++;
       }
       
-      struct ppm_pixel color;
+      struct ppm_pixel color = {0,0,0};
       if (iter < data->maxIterations){
         color = data->palette[iter];
-        data->pixels[i][j] = color;
+        data->pixels[j][i] = color;
+      } else {
+        data->pixels[j][i] = color;
       }
     }
   }
