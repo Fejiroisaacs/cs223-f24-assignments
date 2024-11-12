@@ -53,7 +53,6 @@ void * start(void* userdata) {
         iter++;
       }
       
-      struct ppm_pixel color;
       if (iter < data->maxIterations){
         data->membership[i][j] = 0;
       } else {
@@ -154,6 +153,10 @@ int main(int argc, char* argv[]) {
   srand(time(0));
   membership = malloc(sizeof(int *)*maxIterations);
   counts = malloc(sizeof(int *)*maxIterations);
+  if (!membership || !counts) { 
+    perror("Error allocating memory for membership or counts"); 
+    return 1;
+  }
 
   // intialize pixels to all 0
   pixels = malloc(sizeof(struct ppm_pixel*) * size);
@@ -178,6 +181,7 @@ int main(int argc, char* argv[]) {
   pthread_t threads[4];
   struct thread_data data[4];
   pthread_barrier_init(&barrier, NULL, numProcesses);
+  pthread_mutex_init(&lock, NULL);
   int quadrants[4][4] = {
     {0, size/2, 0, size/2},
     {size/2, size, 0, size/2},
@@ -210,6 +214,7 @@ int main(int argc, char* argv[]) {
   timer = tend.tv_sec - tstart.tv_sec + (tend.tv_usec - tstart.tv_usec)/1.e6;
   printf("Computed buddhabrot set (%dx%d) in %f seconds\n", size, size, timer);
   pthread_barrier_destroy(&barrier);
+  pthread_mutex_destroy(&lock);
 
   char *filename = malloc(sizeof(char)*50);
   char *filestart = "buddhabrot-";
