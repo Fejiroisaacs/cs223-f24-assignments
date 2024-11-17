@@ -151,8 +151,8 @@ int main(int argc, char* argv[]) {
   // todo: your code here
 
   srand(time(0));
-  membership = malloc(sizeof(int *)*maxIterations);
-  counts = malloc(sizeof(int *)*maxIterations);
+  membership = malloc(sizeof(int *)*size);
+  counts = malloc(sizeof(int *)*size);
   if (!membership || !counts) { 
     perror("Error allocating memory for membership or counts"); 
     return 1;
@@ -164,7 +164,7 @@ int main(int argc, char* argv[]) {
     pixels[i] = malloc(sizeof(struct ppm_pixel) * size);
     membership[i] = malloc(sizeof(int) * size);
     counts[i] = malloc(sizeof(int) * size);
-    if(pixels[i] == NULL || membership[i] == NULL || counts == NULL){
+    if(pixels[i] == NULL || membership[i] == NULL || counts[i] == NULL){
       perror("Error allocating memory");
       return 1;
     }
