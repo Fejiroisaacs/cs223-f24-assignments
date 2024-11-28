@@ -1,7 +1,7 @@
 /*----------------------------------------------
  * Author: Oghenefejiro Anigboro
  * Date: 11/25/2024
- * Description: Program implementing grep
+ * Description: Program for implementing grep
  ---------------------------------------------*/
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,7 +20,6 @@ struct thread_data {
 };
 
 void * search(void* userdata) {
-  pthread_t tid = pthread_self();
   struct thread_data *data = (struct thread_data *) userdata;
   FILE *searchFile;
   char line[100];
@@ -48,11 +47,16 @@ int main(int argc, char* argv[]) {
     return 0;
   }
 
-  const int numThreads = atoi(argv[1]);
+  int numThreads = atoi(argv[1]);
   char keyword[100];
   char command[5];
   char directory[100];
   char **files = malloc(sizeof(char*)*(100));
+
+  if (numThreads < 1) {
+    printf("usage: numThreads > 0\n");
+    return 1;
+  }
 
   strcpy(keyword, argv[2]);
   strcpy(command, argv[3]);
@@ -93,18 +97,18 @@ int main(int argc, char* argv[]) {
     return 0;
   }
 
-  printf("Searching %d files for keyword: public\n", index);
+  printf("Searching %d files for keyword: %s\n", index, keyword);
 
   float timer;
   struct timeval tstart, tend;
   gettimeofday(&tstart, NULL);
 
-  pthread_t threads[numThreads];
-  struct thread_data data[numThreads];
+  pthread_t *threads = malloc(numThreads * sizeof(pthread_t));
+  struct thread_data *data = malloc(numThreads * sizeof(struct thread_data));
 
   pthread_mutex_init(&lock, NULL);
 
-  if (index > numThreads){
+  if (index >= numThreads){
     for (int i = 0; i < numThreads; i++) {
       data[i].id = i;
       data[i].keyword = keyword;
@@ -129,11 +133,11 @@ int main(int argc, char* argv[]) {
     pthread_mutex_destroy(&lock);
 
   } else{
-    printf("Number of threads (%d) < number of files (%d) to search", numThreads, index);
+    printf("Number of threads (%d) < number of files (%d) to search\n", numThreads, index);
   }
 
   for(int i = 0; i < index; ++i) free(files[i]);
-  free(files);
+  free(files); free(threads); free(data);
 
   return 0;
 }
