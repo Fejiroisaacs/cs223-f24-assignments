@@ -1,3 +1,8 @@
+/*----------------------------------------------
+ * Author: Oghenefejiro Anigboro
+ * Date: 12/04/2024
+ * Description: Program for benchmarking our implemented malloc
+ ---------------------------------------------*/
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -17,6 +22,28 @@ struct chunk {
 };
 
 void memstats(struct chunk* freelist, void* buffer[], int len) {
+  int totalBlocks=0, usedBlocks=0, freedBlocks=0, totalMem=0, usedMem=0, freeMem=0, unusedMem=0;
+  for(int i = 0; i < len; ++i){
+    if(buffer[i]!=NULL){
+      struct chunk * curr = (struct chunk*) ((struct chunk*) buffer[i]-1);
+      totalMem += curr->size;
+      unusedMem += curr->size - curr->used;
+      usedMem += curr -> size;
+      ++totalBlocks;
+    }
+  }
+  while (freelist != NULL) {
+    ++freedBlocks;
+    ++totalBlocks;
+    freeMem += freelist->size;
+    freelist = freelist->next;
+  }
+
+  usedBlocks = totalBlocks - freedBlocks;
+
+  printf("Total blocks: %d Free blocks: %d Used blocks: %d\n", totalBlocks, freedBlocks, usedBlocks);
+  printf("Total memory allocated: %d Free memory: %d Used memory: %d\n", totalMem+freeMem, freeMem, usedMem);
+  printf("Underutilized memory: %0.2f\n", (float)unusedMem/totalMem);
 }
 
 int main ( int argc, char* argv[]) {
